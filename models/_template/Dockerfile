@@ -24,6 +24,9 @@ RUN mkdir -p /opt/mylm/checkpoint
 # FROM continuumio/miniconda3
 FROM continuumio/miniconda3
 
+# Collections error so we need to use python3.9
+RUN conda create -n my_env python=3.9
+
 # Root of model directory relative to build context.
 ARG MODEL_ROOT=models/_template
 
@@ -37,8 +40,8 @@ ARG MODEL_ROOT=models/_template
 
 ## Add test dependencies. These are required for all images -- otherwise tests
 ## will fail.
-RUN conda install -y numpy nomkl && conda clean -tipsy
-RUN pip install nose jsonschema
+RUN conda install -y numpy nomkl && conda clean -tip
+RUN pip install nose jsonschema numpy 
 
 ## TODO: Fetch/copy model dependencies.
 COPY --from=builder /opt/mylm /opt/mylm
